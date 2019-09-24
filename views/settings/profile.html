@@ -1,0 +1,73 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  {{include '../_partials/settings-nav.html'}}
+  <div class="col-md-5">
+    <form id="container">
+      <div class="form-group">
+        <label for="exampleInputEmail1">账号</label>
+        <p class="form-control-static">{{user.email}}</p>
+        <input type="text" value="{{user._id}}" name="id" hidden/>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">昵称</label>
+        <input type="text" class="form-control" name="nickname" id="exampleInputPassword1" placeholder="" value="{{user.nickname}}">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">介绍</label>
+        <textarea class="form-control" rows="3" name="bio" value="{{user.bio}}">{{user.bio}}</textarea>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">性别</label>
+        <div>
+          <label class="radio-inline">
+            <input type="radio" id="inlineRadio1" value='0' name="gender" checked="{{user.gender === 0 ? checked : null}}"> 男
+          </label>
+          <label class="radio-inline">
+            <input type="radio" id="inlineRadio2" value='1' name="gender" checked="{{user.gender === 1 ? checked : null}}"> 女
+          </label>
+          <label class="radio-inline">
+            <input type="radio" id="inlineRadio3" value='-1' name="gender" checked="{{user.gender === -1 ? checked : null}}"> 保密
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">生日</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" name="birthday" value="{{user.birthday}}">
+      </div>
+      <button type="submit" class="btn btn-success">保存</button>
+    </form>
+  </div>
+  <div class="col-md-2 profile-avatar">
+    <dl>
+      <dt>头像设置</dt>
+      <dd>
+        <img class="avatar" width="150" height="150" src="../public/img/avatar-max-img.png" alt="">
+        <div>
+          <button class="btn btn-default" href="">Upload new picture</button>
+        </div>
+      </dd>
+    </dl>
+  </div>
+</section>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $('#container').on('submit', function (event) {
+      event.preventDefault()
+      const formData = $(this).serialize()
+      console.log('formData', formData)
+      $.ajax({
+        url: '/settings/profile',
+        data: formData,
+        dataType: 'json',
+        type: 'POST',
+        success: (res) => {
+          window.alert(res.msg)
+        }
+      })
+    })
+</script>
+{{/block}}
