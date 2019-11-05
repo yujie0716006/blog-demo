@@ -99,8 +99,8 @@ router.post('/register', (req, res) => {
 //  使用md5给密码加密
   body.password = md5(md5(body.password))
 //  上面的代码中如果有相同的邮件和昵称的时候，就会return跳出函数了。所以执行到这里就是没有相同的邮件和昵称，就可以注册在数据库中了
-//  user就是 新注册 的用户
-  new userModel(body).save((err, user) => {
+//  userModel是创建的模型，new userModel创建模型的实例，body是要传入数据库中的数据，然后模型实例调用save进行保存
+  new userModel(body).save((err) => {
     if (err) {
       return res.status(200).json({err_code: 500, msg: 'save is error'})
     }
